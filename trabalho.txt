@@ -1,0 +1,237 @@
+%Exercício 1
+%fatos
+pessoa("Joao", 25).
+pessoa("Maria", 35).
+pessoa("Pedro", 28).
+pessoa("Ana", 40).
+pessoa("Carlos", 32).
+pessoa("Laura", 29).
+pessoa("Ricardo", 45).
+pessoa("Julia", 26).
+pessoa("Fernando", 38).
+pessoa("Silvia", 31).
+
+% Regra para listar pessoas com mais de 30 anos
+pessoas_mais_de_30_anos(Nome) :-
+    pessoa(Nome, Idade),
+    Idade > 30.
+
+%Como consultar
+
+?- pessoas_mais_de_30_anos(Nome), write(Nome), nl, fail.
+
+%Exercício 2
+% Fatos
+cor(vermelho).
+cor(azul).
+cor(amarelo).
+cor(verde).
+cor(laranja).
+cor(roxo).
+cor(rosa).
+cor(marrom).
+cor(preto).
+cor(branco).
+
+objeto(cadeira).
+objeto(mesa).
+objeto(sofa).
+objeto(cama).
+objeto(mesa_de_centro).
+objeto(luminaria).
+objeto(almofada).
+objeto(tapete).
+objeto(quadro).
+objeto(prateleira).
+
+% Regra que relaciona uma cor a um objeto
+cor_objeto(vermelho, cadeira).
+cor_objeto(azul, mesa).
+cor_objeto(amarelo, sofa).
+cor_objeto(verde, cama).
+cor_objeto(laranja, mesa_de_centro).
+cor_objeto(roxo, luminaria).
+cor_objeto(rosa, almofada).
+cor_objeto(marrom, tapete).
+cor_objeto(preto, quadro).
+cor_objeto(branco, prateleira).
+
+%Consulta
+?- findall(Objeto, cor_objeto(verde, Objeto), ObjetosVerdes).
+
+%Exercício 3
+% Fatos
+cidade("Paris","França").
+cidade("Ituporanga", "Brasil").
+cidade("Roma", "Italia").
+cidade("Nova York", "Estados Unidos").
+cidade("Tokyo", "Japão").
+cidade("Sydney", "Australia").
+cidade("Cairo", "Egito").
+cidade("Moscou", "Russia").
+cidade("São Paulo", "Brasil").
+cidade("Rio de Janeiro", "Brasil").
+
+% Regra para encontrar todas as cidades em um determinado país
+cidades_em_pais(Pais, ListaCidades) :-
+    findall(Cidade, cidade(Cidade, Pais), ListaCidades).
+
+consultar
+?- cidades_em_pais("Brasil", ListaBrasil), write(ListaBrasil).
+
+%Exercício 4
+% Fatos
+produto(iphone, 1000, 5).
+produto(laptop, 1200, 3).
+produto(tv, 800, 10).
+produto(fogao, 500, 2).
+produto(geladeira, 1200, 0).
+produto(blender, 50, 8).
+produto(microondas, 150, 1).
+produto(cadeira, 80, 0).
+produto(mesa, 150, 4).
+produto(videogame, 300, 6).
+
+% Regra para determinar se um produto está em falta
+produto_em_falta(Produto) :-
+    produto(Produto, _, Quantidade),
+    Quantidade =:= 0.
+
+%Consulta
+?- produto_em_falta(Produto), write(Produto), nl, fail
+
+%Exercício 5
+%Fatos
+musica('Billie Jean', pop).
+musica('Hotel California', rock).
+musica('Crazy In Love', rnb).
+musica('Thinking Out Loud', pop).
+musica('Chega de Saudade', bossa_nova).
+musica('Smooth Criminal', pop).
+
+% Regra para listar todas as músicas de um gênero específico
+musicas_por_genero(Genero, ListaMusicas) :-
+    findall(Musica, musica(Musica, Genero), ListaMusicas).
+
+%Consulta
+?- musicas_por_genero(pop, ListaPop).
+
+%Exercício 6
+%Fatos
+animal("Elefante", "Mamífero").
+animal("Pinguim", "Ave").
+animal("Gavião", "Ave").
+animal("Tubarão", "Peixe").
+animal("Baleia", "Mamífero").
+animal("Cobra", "Réptil").
+animal("Crocodilo", "Réptil").
+
+% Regra para encontrar todos os animais de uma espécie específica
+animais_por_especie(Especie, ListaAnimais) :-
+    findall(Animal, animal(Animal, Especie), ListaAnimais).
+
+Consulta	
+?- animais_por_especie("Mamífero", ListaMamiferos), write(ListaMamiferos).
+
+%Exercício 7
+% Fatos
+nota("João", 7).
+nota("Maria", 4).
+nota("Pedro", 6).
+nota("Ana", 3).
+nota("Lucas", 8).
+nota("Clara", 5).
+nota("Fernando", 2).
+nota("Carla", 9).
+nota("Rafael", 4).
+nota("Daniela", 6).
+
+% Regra para determinar se um aluno foi aprovado na disciplina
+aluno_aprovado(Aluno) :-
+    nota(Aluno, Nota),
+    Nota >= 5.
+
+% Consulta
+?- aluno_aprovado("Maria").
+
+%Exercício 8
+% Fatos
+distancia("Rio de Janeiro", "São Paulo", 300).
+distancia("Rio de Janeiro", "Belo Horizonte", 400).
+distancia("Rio de Janeiro", "Brasília", 1100).
+distancia("Rio de Janeiro", "Salvador", 1200).
+distancia("São Paulo", "Belo Horizonte", 600).
+distancia("São Paulo", "Brasília", 1000).
+distancia("São Paulo", "Salvador", 1500).
+distancia("Belo Horizonte", "Brasília", 700).
+distancia("Belo Horizonte", "Salvador", 900).
+distancia("Brasília", "Salvador", 1100).
+
+% Regra para encontrar a cidade mais próxima a uma cidade de origem especificada
+cidade_mais_proxima(Origem, CidadeMaisProxima, DistanciaMaisProxima) :-
+    distancia(Origem, CidadeMaisProxima, DistanciaMaisProxima),
+    forall(distancia(Origem, OutraCidade, Distancia),
+           Distancia < DistanciaMaisProxima
+           -> (CidadeMaisProxima = OutraCidade, DistanciaMaisProxima = Distancia)
+           ; true
+    ).
+
+%Consulta
+?- cidade_mais_proxima("Rio de Janeiro", Cidade, Distancia).
+
+%Exercício 9
+%Fatos
+pais("Brasil", "Brasília", "Português").
+pais("Estados Unidos", "Washington DC", "Inglês").
+pais("França", "Paris", "Francês").
+pais("Itália", "Roma", "Italiano").
+pais("Japão", "Tóquio", "Japonês").
+pais("China", "Pequim", "Chinês").
+pais("Egito", "Cairo", "Árabe").
+pais("Rússia", "Moscou", "Russo").
+pais("índia", "Nova Delhi", "Hindi").
+pais("Australia", "Canberra", "Inglês").
+
+% Regra para encontrar todos os países onde uma língua específica é falada
+paises_com_lingua(Lingua, ListaPaises) :-
+    findall(Pais, pais(Pais, _, Lingua), ListaPaises).
+
+%Consulta
+?- paises_com_lingua("Inglês", ListaIngles).
+
+%Exercício 10
+%Fatos
+
+% Ingredientes
+ingrediente(sal).
+ingrediente(acucar).
+ingrediente(farinha).
+ingrediente(ovos).
+ingrediente(leite).
+ingrediente(azeite).
+ingrediente(alho).
+ingrediente(cebola).
+ingrediente(tomate).
+ingrediente(carne).
+
+% Receitas
+receita(feijoada, [feijao, carne, arroz, cebola, alho]).
+receita(bolo_de_chocolate, [farinha, acucar, ovos, leite, azeite]).
+receita(omelete, [ovos, tomate, cebola, sal]).
+receita(molho_de_tomate, [tomate, cebola, alho, azeite, sal]).
+receita(ensopado_de_carne, [carne, batata, cebola, alho, sal]).
+receita(omelete_de_queijo, [ovos, queijo, sal]).
+receita(panquecas, [farinha, ovos, leite, sal]).
+receita(salada, [tomate, alho, cebola, azeite, sal]).
+receita(bife_a_cavalo, [carne, ovos, arroz, feijao, sal]).
+receita(torta_de_cebola, [cebola, ovos, farinha, leite]).
+
+% Regra para listar receitas que contêm um ingrediente específico
+receitas_com_ingrediente(Ingrediente) :-
+    receita(Receita, Ingredientes),
+    member(Ingrediente, Ingredientes),
+    write(Receita), nl,
+    fail.  % Usamos 'fail' para forçar a retrocessão e encontrar mais soluções
+
+%Consulta
+?- receitas_com_ingrediente(ovos).
